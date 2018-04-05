@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.CheckBox;
 import java.text.NumberFormat;
 
 /**
@@ -32,7 +33,17 @@ public class MainActivity extends AppCompatActivity {
      */
     public void submitOrder(View view) {
         int price = calculatePrice();
-        String summary = createOrderSummary(price);
+
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
+        boolean whippedCreamChecked = whippedCreamCheckBox.isChecked();
+
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        boolean chocolateChecked = chocolateCheckBox.isChecked();
+
+        TextView nameInput = (TextView) findViewById(R.id.name_input);
+        String customerName = nameInput.getText().toString();
+
+        String summary = createOrderSummary(price, whippedCreamChecked, chocolateChecked, customerName);
         displayMessage(summary);
     }
 
@@ -48,10 +59,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Create and return summary of the order.
      * @param price is the total price of the order
+     * @param hasWhippedCream is whether the order has whipped cream or not
      * @return a message that summarizes the order
      */
-    private String createOrderSummary(int price) {
-        String message = "Name: Momo-chan\nQuantity: " + quantity + "\nTotal: $" + price + ".00\nThank you!";
+    private String createOrderSummary(int price, boolean hasWhippedCream, boolean hasChocolate, String customerName) {
+        String message = "Name: " + customerName;
+        message += "\nQuantity: " + quantity;
+        message += "\nHas whipped cream? " + hasWhippedCream;
+        message += "\nHas chocolate? " + hasChocolate;
+        message += "\nTotal: $" + price + ".00\nThank you!";
         return message;
     }
 
